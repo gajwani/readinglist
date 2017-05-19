@@ -1,7 +1,8 @@
 .gradle
 /build/
 gradle/wrapper/*
-gradlew*
+gradlew
+gradlew.bat
 
 ### STS ###
 .apt_generated
@@ -24,3 +25,5 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
+
+out/
