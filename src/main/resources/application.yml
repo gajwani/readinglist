@@ -1,3 +1,9 @@
+server:
+  port: 5000
+
+amazon:
+  associatedId: habuma-20
+
 spring:
   thymeleaf:
     cache: false
@@ -5,5 +11,4 @@ spring:
 logging:
   file: readingList.log
   level:
-    root: WARN
     org.springframework.security: DEBUG

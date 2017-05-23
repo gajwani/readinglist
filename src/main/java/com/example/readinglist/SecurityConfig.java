@@ -31,14 +31,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
           .failureUrl("/login?error=true");
   }
 
+
   @Override
-  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+  protected void configure(
+      AuthenticationManagerBuilder auth) throws Exception {
     auth
         .userDetailsService(new UserDetailsService() {
           @Override
           public UserDetails loadUserByUsername(String username)
-            throws UsernameNotFoundException {
-            return readerRepository.findOne(username);
+              throws UsernameNotFoundException {
+            UserDetails userDetails = readerRepository.findOne(username);
+            if (userDetails != null) {
+              return userDetails;
+            }
+            throw new UsernameNotFoundException("User '" + username + "' not found.");
           }
         });
   }
