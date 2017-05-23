@@ -1,0 +1,9 @@
+spring:
+  thymeleaf:
+    cache: false
+
+logging:
+  file: readingList.log
+  level:
+    root: WARN
+    org.springframework.security: DEBUG
