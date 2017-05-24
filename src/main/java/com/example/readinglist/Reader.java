@@ -71,4 +71,9 @@ public class Reader implements UserDetails {
   public boolean isEnabled() {
     return true;
   }
+
+  @Override
+  public String toString() {
+    return String.format("username = %s, password = %s, fullname = %s", username, password, fullname);
+  }
 }
