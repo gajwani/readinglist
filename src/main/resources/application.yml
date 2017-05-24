@@ -2,7 +2,7 @@ server:
   port: 5000
 
 amazon:
-  associatedId: habuma-20
+  associateId: habuma-20
 
 spring:
   thymeleaf:
