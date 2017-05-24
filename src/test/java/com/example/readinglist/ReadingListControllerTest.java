@@ -3,10 +3,12 @@ package com.example.readinglist;
 import static org.hamcrest.Matchers.*;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -19,7 +21,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest
 public class ReadingListControllerTest {
 
   @Autowired
@@ -27,12 +29,19 @@ public class ReadingListControllerTest {
 
   private MockMvc mockMvc;
 
+  Reader expectedReader;
+
   @Before
   public void setupMockMvc() {
     mockMvc = MockMvcBuilders
         .webAppContextSetup(webContext)
         .apply(springSecurity())
         .build();
+
+    expectedReader = new Reader();
+    expectedReader.setUsername("craig");
+    expectedReader.setPassword("password");
+    expectedReader.setFullname("Craig Walls");
   }
 
   @Test
@@ -45,41 +54,39 @@ public class ReadingListControllerTest {
   @Test
   @WithUserDetails("craig")
   public void homePage_authenticatedUser() throws Exception {
-    Reader expectedReader = new Reader();
-    expectedReader.setUsername("craig");
-    expectedReader.setPassword("password");
-    expectedReader.setFullname("Craig Walls");
-
     mockMvc.perform(get("/readinglist"))
         .andExpect(status().isOk())
         .andExpect(view().name("readingList"))
         .andExpect(model().attribute("reader", samePropertyValuesAs(expectedReader)))
-        .andExpect(model().attribute("books", is(empty())));
+        .andExpect(model().attribute("books", hasSize(0)));
   }
 
-  //  @Test
-//  public void postBook() throws Exception {
-//    mockMvc.perform(post("/")
-//        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-//        .param("title", "BOOK TITLE")
-//        .param("author", "BOOK AUTHOR")
-//        .param("isbn", "1234567890")
-//        .param("description", "DESCRIPTION"))
-//        .andExpect(status().is3xxRedirection())
-//        .andExpect(header().string("Location", "/"));
-//
-//    Book expectedBook = new Book();
-//    expectedBook.setId(1L);
-//    expectedBook.setTitle("BOOK TITLE");
-//    expectedBook.setAuthor("BOOK AUTHOR");
-//    expectedBook.setIsbn("1234567890");
-//    expectedBook.setDescription("DESCRIPTION");
-//
-//    mockMvc.perform(get("/"))
-//        .andExpect(status().isOk())
-//        .andExpect(view().name("readingList"))
-//        .andExpect(model().attributeExists("books"))
-//        .andExpect(model().attribute("books", hasSize(1)));
-////        .andExpect(model().attribute("books", contains(samePropertyValuesAs(expectedBook))));
-//  }
+  @Test
+  @WithUserDetails("craig")
+  @Ignore
+  public void postBook() throws Exception {
+    mockMvc.perform(post("/readinglist")
+        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+        .param("title", "BOOK TITLE")
+        .param("author", "BOOK AUTHOR")
+        .param("isbn", "1234567890")
+        .param("description", "DESCRIPTION"))
+        .andExpect(status().is3xxRedirection())
+        .andExpect(header().string("Location", "/readinglist"));
+
+    Book expectedBook = new Book();
+    expectedBook.setId(1L);
+    expectedBook.setReader(expectedReader);
+    expectedBook.setTitle("BOOK TITLE");
+    expectedBook.setAuthor("BOOK AUTHOR");
+    expectedBook.setIsbn("1234567890");
+    expectedBook.setDescription("DESCRIPTION");
+
+    mockMvc.perform(get("/readinglist"))
+        .andExpect(status().isOk())
+        .andExpect(view().name("readingList"))
+        .andExpect(model().attributeExists("books"))
+        .andExpect(model().attribute("reader", samePropertyValuesAs(expectedReader)))
+        .andExpect(model().attribute("books", hasSize(1)));
+  }
   }
