@@ -15,7 +15,7 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class ReadinglistIT {
+public class ReadingListIT {
 
     @LocalServerPort
     private int port;
@@ -24,7 +24,7 @@ public class ReadinglistIT {
     public void pageNotFound() {
         try {
             RestTemplate rest = new RestTemplate();
-            rest.getForEntity("http://localhost:" + port + "/bogusPage", String.class);
+            rest.getForObject("http://localhost:" + port + "/bogusPage", String.class);
             fail("Should result in HTTP 404");
         } catch (HttpClientErrorException e) {
             assertEquals(HttpStatus.NOT_FOUND, e.getStatusCode());

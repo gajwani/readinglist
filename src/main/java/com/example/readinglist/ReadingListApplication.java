@@ -9,10 +9,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import java.util.List;
 
 @SpringBootApplication
-public class ReadinglistApplication extends WebMvcConfigurerAdapter {
+public class ReadingListApplication extends WebMvcConfigurerAdapter {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ReadinglistApplication.class, args);
+		SpringApplication.run(ReadingListApplication.class, args);
 	}
 
 	@Override
