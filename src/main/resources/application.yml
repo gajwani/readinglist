@@ -16,4 +16,16 @@ logging:
 management:
   context-path: /actuator
 
+---
+spring:
+  profiles: production
+  datasource:
+    url: jdbc:postgresql://localhost:5432/readinglist
+    username: pivotal
+    password: steal13kittens
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: none
+
 
