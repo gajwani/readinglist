@@ -12,3 +12,8 @@ logging:
   file: readingList.log
   level:
     org.springframework.security: DEBUG
+
+management:
+  context-path: /actuator
+
+
