@@ -29,7 +29,7 @@ public class ReadingListControllerTest {
 
   private MockMvc mockMvc;
 
-  Reader expectedReader;
+  String expectedReader;
 
   @Before
   public void setupMockMvc() {
@@ -37,11 +37,7 @@ public class ReadingListControllerTest {
         .webAppContextSetup(webContext)
         .apply(springSecurity())
         .build();
-
-    expectedReader = new Reader();
-    expectedReader.setUsername("craig");
-    expectedReader.setPassword("password");
-    expectedReader.setFullname("Craig Walls");
+    expectedReader = "craig";
   }
 
   @Test

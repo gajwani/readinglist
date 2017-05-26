@@ -44,7 +44,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: isbn
-                  type: varchar(10)
+                  type: varchar(20)
                   constraints:
                     nullable: false
               - column:
@@ -53,7 +53,7 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: reader_username
+                  name: reader
                   type: varchar(25)
                   constraints:
                     nullable: false

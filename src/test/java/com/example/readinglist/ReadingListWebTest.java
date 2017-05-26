@@ -45,7 +45,7 @@ public class ReadingListWebTest {
         browser.findElementByName("password").sendKeys("password");
         browser.findElementByTagName("form").submit();
 
-        assertEquals("You have no books in your book list", browser.findElementByTagName("div").getText());
+        assertEquals("Add a book", browser.findElementByTagName("h3").getText());
 
         browser.findElementByName("title").sendKeys("BOOK TITLE");
         browser.findElementByName("author").sendKeys("BOOK AUTHOR");

@@ -21,8 +21,8 @@ spring:
   profiles: production
   datasource:
     url: jdbc:postgresql://localhost:5432/readinglist
-    username: pivotal
-    password: steal13kittens
+#    username: pivotal
+#    password:
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
