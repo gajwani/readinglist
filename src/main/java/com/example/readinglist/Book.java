@@ -12,7 +12,7 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private Reader reader;
+    private String reader;
     private String isbn;
     private String title;
     private String author;
@@ -26,11 +26,11 @@ public class Book {
         this.id = id;
     }
 
-    public Reader getReader() {
+    public String getReader() {
         return reader;
     }
 
-    public void setReader(Reader reader) {
+    public void setReader(String reader) {
         this.reader = reader;
     }
 

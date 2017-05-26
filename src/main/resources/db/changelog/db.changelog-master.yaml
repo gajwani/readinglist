@@ -53,7 +53,7 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: reader_username
+                  name: reader
                   type: varchar(25)
                   constraints:
                     nullable: false
@@ -73,3 +73,13 @@ databaseChangeLog:
               - column:
                   name: fullname
                   value: Craig Walls
+            columns:
+              - column:
+                  name: username
+                  value: winnie
+              - column:
+                  name: password
+                  value: password
+              - column:
+                  name: fullname
+                  value: Winnie Kwon
