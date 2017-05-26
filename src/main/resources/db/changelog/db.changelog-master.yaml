@@ -73,3 +73,13 @@ databaseChangeLog:
               - column:
                   name: fullname
                   value: Craig Walls
+            columns:
+              - column:
+                  name: username
+                  value: winnie
+              - column:
+                  name: password
+                  value: password
+              - column:
+                  name: fullname
+                  value: Winnie Kwon
