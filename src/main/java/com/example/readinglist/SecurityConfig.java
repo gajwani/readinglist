@@ -25,12 +25,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .authorizeRequests()
           .antMatchers("/readinglist").hasRole("READER")
           .antMatchers("/**").permitAll()
-          .and()
-          .csrf().disable()
+        .and()
+//          .csrf().disable()
         .formLogin()
           .loginPage("/login").failureUrl("/login?error=true")
           .defaultSuccessUrl("/readinglist")
-          .and()
+        .and()
+        .rememberMe()
+          .tokenValiditySeconds(2419200)
+          .key("myapp")
+        .and()
         .logout()
           .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
           .logoutSuccessUrl("/");
@@ -38,13 +42,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+
+//// In-memory user store example
+//    auth
+//        .inMemoryAuthentication()
+//          .withUser("user").password("password").roles("READER")
+//          .and()
+//          .withUser("admin").password("password").roles("READER", "ADMIN");
+
+//    UserDetailsService user store example
     auth
-        .userDetailsService(userDetailsService());
+        .userDetailsService(readerService());
   }
 
   @Bean
-  public UserDetailsService userDetailsService() {
+  public UserDetailsService readerService() {
     return new UserDetailsService() {
+
       @Override
       public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserDetails userDetails = readerRepository.findOne(username);
