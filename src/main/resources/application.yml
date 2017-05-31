@@ -5,6 +5,10 @@ amazon:
   associateId: habuma-20
 
 spring:
+  datasource:
+    url: jdbc:postgresql://${DB_HOST}:5432/${DB_NAME}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
   thymeleaf:
     cache: false
 
@@ -15,17 +19,5 @@ logging:
 
 management:
   context-path: /actuator
-
----
-spring:
-  profiles: production
-  datasource:
-    url: jdbc:postgresql://localhost:5432/readinglist
-#    username: pivotal
-#    password:
-  jpa:
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
-    hibernate:
-      ddl-auto: none
 
 

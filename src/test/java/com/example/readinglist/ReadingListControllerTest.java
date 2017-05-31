@@ -1,9 +1,6 @@
 package com.example.readinglist;
 
-import static org.hamcrest.Matchers.*;
-
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,16 +9,21 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import javax.transaction.Transactional;
+
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.samePropertyValuesAs;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@Transactional
 public class ReadingListControllerTest {
 
   @Autowired
@@ -41,15 +43,8 @@ public class ReadingListControllerTest {
   }
 
   @Test
-  public void homePage_unauthenticatedUser() throws Exception {
-    mockMvc.perform(get("/readinglist"))
-        .andExpect(status().is3xxRedirection())
-        .andExpect(header().string("Location", "http://localhost/login"));
-  }
-
-  @Test
   @WithUserDetails("craig")
-  public void homePage_authenticatedUser() throws Exception {
+  public void readinglistPage_authenticatedUser_renders() throws Exception {
     mockMvc.perform(get("/readinglist"))
         .andExpect(status().isOk())
         .andExpect(view().name("readingList"))
@@ -59,8 +54,7 @@ public class ReadingListControllerTest {
 
   @Test
   @WithUserDetails("craig")
-  @Ignore
-  public void postBook() throws Exception {
+  public void addingBook_createsBook() throws Exception {
     mockMvc.perform(post("/readinglist")
         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
         .param("title", "BOOK TITLE")

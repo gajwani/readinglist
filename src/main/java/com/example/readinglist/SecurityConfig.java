@@ -29,7 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
           .csrf().disable()
         .formLogin()
           .loginPage("/login").failureUrl("/login?error=true")
-          .defaultSuccessUrl("/readinglist")
+          .defaultSuccessUrl("/")
           .and()
         .logout()
           .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
@@ -38,8 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-    auth
-        .userDetailsService(userDetailsService());
+    auth.userDetailsService(userDetailsService());
   }
 
   @Bean

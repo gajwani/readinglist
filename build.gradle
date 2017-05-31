@@ -35,11 +35,8 @@ dependencies {
 	compile("org.springframework.boot:spring-boot-configuration-processor")
 	compile('org.springframework.boot:spring-boot-starter-actuator')
 
-	compile("com.h2database:h2")
 	compile("org.postgresql:postgresql:9.4-1201-jdbc41")
 
-//	Swap out the following two dependencies to switch between Flyway and Liquibase
-//	compile("org.flywaydb:flyway-core")
 	compile("org.liquibase:liquibase-core")
 
 	testCompile('org.springframework.boot:spring-boot-starter-test')
