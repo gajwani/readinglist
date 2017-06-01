@@ -3,9 +3,11 @@ package com.example.readinglist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 
@@ -35,7 +37,11 @@ public class ReadingListController {
   }
 
   @RequestMapping(method = RequestMethod.POST)
-  public String addToReadingList(Book book, Principal principal) {
+  public String addToReadingList(Model model, Principal principal, @Valid Book book, BindingResult bindingResult) {
+    if(bindingResult.hasErrors()) {
+      model.addAttribute("bookErrors", bindingResult.getAllErrors());
+      return readersBooks(model, principal);
+    }
     String reader = principal.getName();
     book.setReader(reader);
     readingListRepository.save(book);

@@ -73,3 +73,17 @@ databaseChangeLog:
               - column:
                   name: fullname
                   value: Craig Walls
+  - changeSet:
+      id: add-category-to-book
+      author: pivotal
+      changes:
+        - addColumn:
+            tableName: book
+            columns:
+              - column:
+                  name: category
+                  type: varchar(25)
+        - addNotNullConstraint:
+            tableName: book
+            columnName: category
+            defaultNullValue: Fiction

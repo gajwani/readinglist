@@ -20,6 +20,16 @@ public class Reader implements UserDetails {
   private String fullname;
   private String password;
 
+  public Reader(String fullname, String username, String password) {
+    super();
+    this.fullname = fullname;
+    this.username = username;
+    this.password = password;
+  }
+
+  public Reader() {
+    super();
+  }
 
   @Override
   public String getUsername() {
