@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -30,6 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ReadingListControllerTest {
   @Autowired private WebApplicationContext webContext;
   @Autowired private ReadingListRepository readinglistRepository;
+  @Autowired private EntityManager entityManager;
   @Autowired private ReaderRepository readerRepository;
   private String expectedReader;
   private MockMvc mockMvc;
@@ -50,8 +52,11 @@ public class ReadingListControllerTest {
     Reader otherReader = readerRepository.save(new Reader("Other Reader","otherReader",  "password"));
     Reader expectedReaderObject = readerRepository.findByUsername(expectedReader);
     readinglistRepository.save(new Book(BookCategories.NonFiction, expectedReaderObject, "213213","Book 1", "Mark Twain", "Description 1"));
-    readinglistRepository.save(new Book(BookCategories.NonFiction, expectedReaderObject, "213214","Book 2", "Mark Twain", "Description 2"));
+    readinglistRepository.save(new Book(BookCategories.Magazine, expectedReaderObject, "213214","Book 2", "Mark Twain", "Description 2"));
     readinglistRepository.save(new Book(BookCategories.NonFiction, otherReader, "213215","Book 3", "Mark Twain", "Description 3"));
+
+    entityManager.flush();
+    entityManager.clear();
 
     mockMvc.perform(get("/readinglist"))
       .andExpect(status().isOk())
@@ -75,6 +80,9 @@ public class ReadingListControllerTest {
       .andExpect(status().is3xxRedirection())
       .andExpect(header().string("Location", "/readinglist"));
 
+    entityManager.flush();
+    entityManager.clear();
+
     List<Book> books = readinglistRepository.findAll();
     assertEquals(1, books.size());
     Book firstBook = books.get(0);
@@ -92,6 +100,10 @@ public class ReadingListControllerTest {
   @WithUserDetails("craig")
   public void addingBook_withMissingCategory_doesNotCreateBook() throws Exception {
     readinglistRepository.save( new Book(BookCategories.NonFiction, readerRepository.findByUsername(expectedReader), "213213","Book 1", "Mark Twain", "Description 1"));
+
+    entityManager.flush();
+    entityManager.clear();
+
     assertEquals(1, readinglistRepository.findAll().size());
 
     mockMvc.perform(
@@ -105,6 +117,9 @@ public class ReadingListControllerTest {
     ).andExpect(status().isOk())
       .andExpect(model().attribute("reader", samePropertyValuesAs(expectedReader)))
       .andExpect(model().attribute("books", hasSize(1)));
+
+    entityManager.flush();
+    entityManager.clear();
 
     assertEquals(1, readinglistRepository.findAll().size());
   }

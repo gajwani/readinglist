@@ -1,10 +1,14 @@
 package com.example.readinglist;
 
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
+@TypeDef(name = "BookCategoryType", typeClass = BookCategoryType.class)
 public class Book {
 
   @Id @GeneratedValue(strategy = GenerationType.AUTO) private Long id;
@@ -13,7 +17,7 @@ public class Book {
   @Size(min = 1) private String title;
   private String author;
   private String description;
-  @NotNull @Enumerated(EnumType.STRING) private BookCategories category;
+  @NotNull @Type(type = "BookCategoryType") private BookCategories category;
 
   public Book(BookCategories category, Reader reader, String isbn, String title, String author, String description) {
     super();

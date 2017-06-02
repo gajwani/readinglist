@@ -87,3 +87,13 @@ databaseChangeLog:
             tableName: book
             columnName: category
             defaultNullValue: Fiction
+  - changeSet:
+      id: change-category-to-enum
+      author: pivotal
+      changes:
+        - sql:
+            sql: CREATE TYPE book_category AS ENUM('Fiction', 'NonFiction', 'Reference', 'Magazine')
+        - sql:
+            sql: UPDATE book SET category = 'Fiction' where category not in ('Fiction', 'NonFiction', 'Reference', 'Magazine')
+        - sql:
+            sql: ALTER TABLE book ALTER COLUMN category TYPE book_category USING category::book_category
